@@ -1,5 +1,5 @@
 {
-  "app": "node bin/sm.js",
+  "app": "node bin/me.js",
   "context": {
     "@aws-cdk/core:enableStackNameDuplicates": "true",
     "aws-cdk:enableDiffNoFail": "true"
