@@ -9,7 +9,7 @@
 	<h1>Hello {name}!</h1>
 	<h2>{intro}</h2>
 	<ul>
-		{#each socials as item, i}
+		{#each socials as item}
 			<li>
 				<a target="_blank" href="{item.link}">
 					{item.name}
