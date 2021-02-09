@@ -11,7 +11,7 @@
 	<ul>
 		{#each socials as item}
 			<li>
-				<a target="_blank" href="{item.link}">
+				<a target="_blank" rel="noopener" href="{item.link}">
 					{item.name}
 				</a>
 			</li>

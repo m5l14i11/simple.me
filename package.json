@@ -7,18 +7,18 @@
     "postbuild": "cdk deploy -c domain=siarheimelnik.dev -c subdomain=www"
   },
   "devDependencies": {
-    "aws-cdk": "^1.66.0",
+    "aws-cdk": "^1.89.0",
     "parcel-bundler": "^1.12.4",
     "parcel-plugin-svelte": "^4.0.6",
     "sass": "^1.26.11",
     "svelte": "^3.29.0"
   },
   "dependencies": {
-    "@aws-cdk/aws-certificatemanager": "^1.66.0",
-    "@aws-cdk/aws-route53": "^1.66.0",
-    "@aws-cdk/aws-route53-targets": "^1.66.0",
-    "@aws-cdk/aws-s3": "^1.66.0",
-    "@aws-cdk/aws-s3-deployment": "^1.66.0",
-    "@aws-cdk/core": "^1.66.0"
+    "@aws-cdk/aws-certificatemanager": "^1.89.0",
+    "@aws-cdk/aws-route53": "^1.89.0",
+    "@aws-cdk/aws-route53-targets": "^1.89.0",
+    "@aws-cdk/aws-s3": "^1.89.0",
+    "@aws-cdk/aws-s3-deployment": "^1.89.0",
+    "@aws-cdk/core": "^1.89.0"
   }
 }
