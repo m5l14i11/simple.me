@@ -8,9 +8,9 @@
 <style>
 	main {
 		text-align: center;
-		padding: 2em;
 		width: 100%;
 		margin: 0 auto;
+		padding: 2em;
 	}
 
 	h1 {
@@ -44,10 +44,28 @@
 		color: #fff;
 	}
 
-	@media (min-width: 640px) {
+	@media only screen and (max-device-width: 812px) {
 		main {
-			max-width: 100%;
-			text-align: center;
+			text-align: left;
+			padding: 1em;
+		}
+
+		h1 {
+			font-size: 3em;
+		}
+
+		h2 {
+			font-size: 2em;
+		}
+
+		ul {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+		}
+
+		li {
+			margin-right: 0.4em;
 		}
 	}
 </style>
