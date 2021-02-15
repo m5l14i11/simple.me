@@ -1,24 +1,22 @@
-const cdk = require("@aws-cdk/core");
-const s3 = require("@aws-cdk/aws-s3");
-const s3deploy = require("@aws-cdk/aws-s3-deployment");
-const cloudfront = require("@aws-cdk/aws-cloudfront");
-const route53 = require("@aws-cdk/aws-route53");
-const acm = require("@aws-cdk/aws-certificatemanager");
-const targets = require("@aws-cdk/aws-route53-targets/lib");
+import * as cdk from "@aws-cdk/core";
+import * as s3 from "@aws-cdk/aws-s3";
+import * as s3deploy from "@aws-cdk/aws-s3-deployment";
+import * as cloudfront from "@aws-cdk/aws-cloudfront";
+import * as route53 from "@aws-cdk/aws-route53";
+import * as acm from "@aws-cdk/aws-certificatemanager";
+import * as targets from "@aws-cdk/aws-route53-targets/lib";
 
 class MeSite extends cdk.Construct {
-  constructor(parent, name, props) {
+  constructor(parent: cdk.Construct, name: string, props: { siteSubDomain: string; domainName: string; }) {
     super(parent, name);
 
-    const { domainName, siteSubDomain } = props;
+    const { siteSubDomain, domainName } = props;
 
-    const hostedZone = route53.HostedZone.fromLookup(this, "MeZone", {
-      domainName,
+    const hostedZone = route53.HostedZone.fromHostedZoneAttributes(this, "MeZone", {
+      hostedZoneId: 'Z03308721WODLQWVUUQPA',
+      zoneName: domainName
     });
-
-    // FIX
-    hostedZone.hostedZoneId = 'Z03308721WODLQWVUUQPA';
-
+    
     const siteDomain = `${siteSubDomain}.${domainName}`;
 
     new cdk.CfnOutput(this, "MeSite", { value: `https://${siteDomain}` });
@@ -27,19 +25,22 @@ class MeSite extends cdk.Construct {
       bucketName: siteDomain,
       websiteIndexDocument: "index.html",
       websiteErrorDocument: "error.html",
-      publicReadAccess: true,
+      publicReadAccess: false,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
 
     new cdk.CfnOutput(this, "MeBucket", { value: siteBucket.bucketName });
+
+    const originAccessIdentity = new cloudfront.OriginAccessIdentity(this, "me-oia");
+
+    siteBucket.grantRead(originAccessIdentity);
 
     const certificate = new acm.DnsValidatedCertificate(
       this,
       "MeSiteCertificate",
       {
         domainName: siteDomain,
-        hostedZone,
-        region: "us-east-1",
+        hostedZone
       }
     );
 
@@ -59,11 +60,18 @@ class MeSite extends cdk.Construct {
         },
         originConfigs: [
           {
+            s3OriginSource: {
+              s3BucketSource: siteBucket,
+              originAccessIdentity: originAccessIdentity
+            },
+            behaviors: [{ isDefaultBehavior: true }]
+          },
+          {
             customOriginSource: {
               domainName: siteBucket.bucketWebsiteDomainName,
               originProtocolPolicy: cloudfront.OriginProtocolPolicy.HTTP_ONLY,
             },
-            behaviors: [{ isDefaultBehavior: true, compress: true }],
+            behaviors: [{ pathPattern: '/', compress: true }],
           },
         ],
         httpVersion: cloudfront.HttpVersion.HTTP2,
@@ -91,4 +99,4 @@ class MeSite extends cdk.Construct {
   }
 }
 
-module.exports = { MeSite };
+export { MeSite };
