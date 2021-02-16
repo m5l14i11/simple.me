@@ -1,11 +1,20 @@
-<script>
-	export let name;
-	export let intro;
-	export let socials;
-	export let outro;
+<script lang="typescript">
+	interface Social {
+		name: string;
+		link: string;
+	};
+
+	export let name: string;
+	export let intro: string;
+	export let socials: Social[];
+	export let outro: string;
 </script>
 
-<style>
+<style type="text/scss">
+	$color1: #de3600;
+	$color2: #ee0000;
+	$color3: #fff;
+
 	main {
 		text-align: center;
 		width: 100%;
@@ -14,14 +23,14 @@
 	}
 
 	h1 {
-		color: #de3600;
+		color: $color1;
 		text-transform: uppercase;
 		font-size: 4em;
 		font-weight: 100;
 	}
 
 	h2 {
-		color: #de3600;
+		color: $color1;
 		text-transform: capitalize;
 		font-size: 3em;
 		font-weight: 100;
@@ -34,7 +43,7 @@
 	}
 
 	a {
-		color: #ee0000;
+		color: $color2;
 		text-transform: capitalize;
 		font-size: 1.5em;
 		font-weight: 100;

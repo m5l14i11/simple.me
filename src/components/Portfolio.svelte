@@ -1,5 +1,5 @@
 <script lang="typescript">
-    let title = 'Write Up';
+    let title = 'Portfolio';
 </script>
 
 <div>{title}</div>

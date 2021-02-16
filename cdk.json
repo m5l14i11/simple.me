@@ -1,5 +1,5 @@
 {
-  "app": "npx ts-node bin/me-cdk.ts",
+  "app": "npx ts-node --project tsconfig.cdk.json bin/me-cdk.ts",
   "context": {
     "@aws-cdk/core:enableStackNameDuplicates": "true",
     "aws-cdk:enableDiffNoFail": "true",
