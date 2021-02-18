@@ -1,13 +1,8 @@
 <script lang="typescript">
-	interface Social {
-		name: string;
-		link: string;
-	};
+	import { machine } from '../machines/MeMachine'
+	import { useMachine } from '@xstate/svelte/lib/fsm';
 
-	export let name: string;
-	export let intro: string;
-	export let socials: Social[];
-	export let outro: string;
+	const { state } = useMachine(machine);
 </script>
 
 <style type="text/scss">
@@ -80,10 +75,10 @@
 </style>
 
 <main>
-	<h1>Hello {name}!</h1>
-	<h2>{intro}</h2>
+	<h1>{$state.context.greetings}</h1>
+	<h2>{$state.context.intro}</h2>
 	<ul>
-		{#each socials as item}
+		{#each $state.context.socials as item}
 			<li>
 				<a target="_blank" rel="noopener" href={item.link}>
 					{item.name}
@@ -91,5 +86,5 @@
 			</li>
 		{/each}
 	</ul>
-	<div>{outro}</div>
+	<div>{$state.context.outro}</div>
 </main>
