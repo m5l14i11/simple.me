@@ -36,7 +36,7 @@ const buildContext = (): Context => ({
             "name": "linkedin",
             "link": "https://www.linkedin.com/in/siarheim"
         }
-    ].sort((a, b) => a.name.length - b.name.length),
+    ].sort((a, b) => b.name.length - a.name.length),
     outro: "Wm05c2JHOTNJSFJvWlNCM2FHbDBaU0J5WVdKaWFYUWc4SitRaHc9PQ=="
 });
 

@@ -69,11 +69,12 @@ class MeSite extends cdk.Construct {
           {
             customOriginSource: {
               domainName: siteBucket.bucketWebsiteDomainName,
-              originProtocolPolicy: cloudfront.OriginProtocolPolicy.HTTP_ONLY,
+              originProtocolPolicy: cloudfront.OriginProtocolPolicy.HTTPS_ONLY,
             },
             behaviors: [{ pathPattern: '/', compress: true }],
           },
         ],
+        enableIpV6: true,
         httpVersion: cloudfront.HttpVersion.HTTP2,
       }
     );
