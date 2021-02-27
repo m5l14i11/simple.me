@@ -40,6 +40,7 @@ export default {
       compilerOptions: {
         dev: DEV,
         generate: "dom",
+        hydratable: true,
       },
       emitCss: true,
     }),

@@ -9,3 +9,7 @@ cdk.out
 .cache
 dist
 static
+edge
+
+cdk.context.json
+.DS_Store

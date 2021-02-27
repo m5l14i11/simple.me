@@ -5,6 +5,8 @@ import * as cloudfront from "@aws-cdk/aws-cloudfront";
 import * as route53 from "@aws-cdk/aws-route53";
 import * as acm from "@aws-cdk/aws-certificatemanager";
 import * as targets from "@aws-cdk/aws-route53-targets/lib";
+import * as lambda from "@aws-cdk/aws-lambda";
+import { Duration, RemovalPolicy } from "@aws-cdk/core";
 
 class MeSite extends cdk.Construct {
   constructor(
@@ -32,9 +34,8 @@ class MeSite extends cdk.Construct {
     const siteBucket = new s3.Bucket(this, "MeSiteBucket", {
       bucketName: siteDomain,
       websiteIndexDocument: "index.html",
-      websiteErrorDocument: "error.html",
       publicReadAccess: false,
-      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      removalPolicy: RemovalPolicy.RETAIN,
     });
 
     new cdk.CfnOutput(this, "MeBucket", { value: siteBucket.bucketName });
@@ -59,6 +60,23 @@ class MeSite extends cdk.Construct {
       value: certificate.certificateArn,
     });
 
+    const edgeSSRFunction = new lambda.Function(this, "MeEdgeSSRHandler", {
+      runtime: lambda.Runtime.NODEJS_12_X,
+      code: lambda.Code.fromAsset("./edge"),
+      memorySize: 128,
+      timeout: Duration.seconds(3),
+      handler: "index.handler",
+    });
+
+    const edgeSSRFunctionVersion = new lambda.Version(
+      this,
+      "MeEdgeSSRHandlerVersion",
+      {
+        lambda: edgeSSRFunction,
+        removalPolicy: RemovalPolicy.DESTROY,
+      }
+    );
+
     const distribution = new cloudfront.CloudFrontWebDistribution(
       this,
       "MeSiteDistribution",
@@ -75,14 +93,18 @@ class MeSite extends cdk.Construct {
               s3BucketSource: siteBucket,
               originAccessIdentity: originAccessIdentity,
             },
-            behaviors: [{ isDefaultBehavior: true }],
-          },
-          {
-            customOriginSource: {
-              domainName: siteBucket.bucketWebsiteDomainName,
-              originProtocolPolicy: cloudfront.OriginProtocolPolicy.HTTPS_ONLY,
-            },
-            behaviors: [{ pathPattern: "/", compress: true }],
+            behaviors: [
+              {
+                isDefaultBehavior: true,
+                pathPattern: "/",
+                lambdaFunctionAssociations: [
+                  {
+                    eventType: cloudfront.LambdaEdgeEventType.ORIGIN_REQUEST,
+                    lambdaFunction: edgeSSRFunctionVersion,
+                  },
+                ],
+              },
+            ],
           },
         ],
         enableIpV6: true,
