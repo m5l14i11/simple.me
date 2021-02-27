@@ -7,16 +7,24 @@ import * as acm from "@aws-cdk/aws-certificatemanager";
 import * as targets from "@aws-cdk/aws-route53-targets/lib";
 
 class MeSite extends cdk.Construct {
-  constructor(parent: cdk.Construct, name: string, props: { siteSubDomain: string; domainName: string; }) {
+  constructor(
+    parent: cdk.Construct,
+    name: string,
+    props: { siteSubDomain: string; domainName: string }
+  ) {
     super(parent, name);
 
     const { siteSubDomain, domainName } = props;
 
-    const hostedZone = route53.HostedZone.fromHostedZoneAttributes(this, "MeZone", {
-      hostedZoneId: 'Z03308721WODLQWVUUQPA',
-      zoneName: domainName
-    });
-    
+    const hostedZone = route53.HostedZone.fromHostedZoneAttributes(
+      this,
+      "MeZone",
+      {
+        hostedZoneId: "Z03308721WODLQWVUUQPA",
+        zoneName: domainName,
+      }
+    );
+
     const siteDomain = `${siteSubDomain}.${domainName}`;
 
     new cdk.CfnOutput(this, "MeSite", { value: `https://${siteDomain}` });
@@ -31,7 +39,10 @@ class MeSite extends cdk.Construct {
 
     new cdk.CfnOutput(this, "MeBucket", { value: siteBucket.bucketName });
 
-    const originAccessIdentity = new cloudfront.OriginAccessIdentity(this, "me-oia");
+    const originAccessIdentity = new cloudfront.OriginAccessIdentity(
+      this,
+      "MeOAI"
+    );
 
     siteBucket.grantRead(originAccessIdentity);
 
@@ -40,7 +51,7 @@ class MeSite extends cdk.Construct {
       "MeSiteCertificate",
       {
         domainName: siteDomain,
-        hostedZone
+        hostedZone,
       }
     );
 
@@ -62,16 +73,16 @@ class MeSite extends cdk.Construct {
           {
             s3OriginSource: {
               s3BucketSource: siteBucket,
-              originAccessIdentity: originAccessIdentity
+              originAccessIdentity: originAccessIdentity,
             },
-            behaviors: [{ isDefaultBehavior: true }]
+            behaviors: [{ isDefaultBehavior: true }],
           },
           {
             customOriginSource: {
               domainName: siteBucket.bucketWebsiteDomainName,
               originProtocolPolicy: cloudfront.OriginProtocolPolicy.HTTPS_ONLY,
             },
-            behaviors: [{ pathPattern: '/', compress: true }],
+            behaviors: [{ pathPattern: "/", compress: true }],
           },
         ],
         enableIpV6: true,
@@ -92,7 +103,7 @@ class MeSite extends cdk.Construct {
     });
 
     new s3deploy.BucketDeployment(this, "MeSiteDeployWithInvalidation", {
-      sources: [s3deploy.Source.asset("./dist")],
+      sources: [s3deploy.Source.asset("./static")],
       destinationBucket: siteBucket,
       distribution,
       distributionPaths: ["/*"],

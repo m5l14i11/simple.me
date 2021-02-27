@@ -1,6 +1,6 @@
 <script lang="typescript">
-	import { machine } from '../machines/MeMachine'
-	import { useMachine } from '@xstate/svelte/lib/fsm';
+	import { machine } from "../machines/MeMachine";
+	import { useMachine } from "@xstate/svelte/lib/fsm";
 
 	const { state } = useMachine(machine);
 </script>
