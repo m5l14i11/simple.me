@@ -29,16 +29,12 @@ class MeSite extends cdk.Construct {
 
     const siteDomain = `${siteSubDomain}.${domainName}`;
 
-    new cdk.CfnOutput(this, "MeSite", { value: `https://${siteDomain}` });
-
     const siteBucket = new s3.Bucket(this, "MeSiteBucket", {
       bucketName: siteDomain,
       websiteIndexDocument: "index.html",
       publicReadAccess: false,
       removalPolicy: RemovalPolicy.RETAIN,
     });
-
-    new cdk.CfnOutput(this, "MeBucket", { value: siteBucket.bucketName });
 
     const originAccessIdentity = new cloudfront.OriginAccessIdentity(
       this,
@@ -55,10 +51,6 @@ class MeSite extends cdk.Construct {
         hostedZone,
       }
     );
-
-    new cdk.CfnOutput(this, "MeCertificate", {
-      value: certificate.certificateArn,
-    });
 
     const edgeSSRFunction = new lambda.Function(this, "MeEdgeSSRHandler", {
       runtime: lambda.Runtime.NODEJS_12_X,
@@ -81,12 +73,16 @@ class MeSite extends cdk.Construct {
       this,
       "MeSiteDistribution",
       {
+        enableIpV6: true,
+        httpVersion: cloudfront.HttpVersion.HTTP2,
+
         aliasConfiguration: {
           acmCertRef: certificate.certificateArn,
           names: [siteDomain],
           sslMethod: cloudfront.SSLMethod.SNI,
           securityPolicy: cloudfront.SecurityPolicyProtocol.TLS_V1_1_2016,
         },
+
         originConfigs: [
           {
             s3OriginSource: {
@@ -107,21 +103,15 @@ class MeSite extends cdk.Construct {
             ],
           },
         ],
-        enableIpV6: true,
-        httpVersion: cloudfront.HttpVersion.HTTP2,
       }
     );
 
-    new cdk.CfnOutput(this, "MeDistributionId", {
-      value: distribution.distributionId,
-    });
-
     new route53.ARecord(this, "MeSiteAliasRecord", {
       recordName: siteDomain,
+      zone: hostedZone,
       target: route53.RecordTarget.fromAlias(
         new targets.CloudFrontTarget(distribution)
       ),
-      zone: hostedZone,
     });
 
     new s3deploy.BucketDeployment(this, "MeSiteDeployWithInvalidation", {
@@ -129,6 +119,22 @@ class MeSite extends cdk.Construct {
       destinationBucket: siteBucket,
       distribution,
       distributionPaths: ["/*"],
+    });
+
+    new cdk.CfnOutput(this, "MeSite", {
+      value: `https://${siteDomain}`,
+    });
+
+    new cdk.CfnOutput(this, "MeBucket", {
+      value: siteBucket.bucketName,
+    });
+
+    new cdk.CfnOutput(this, "MeCertificate", {
+      value: certificate.certificateArn,
+    });
+
+    new cdk.CfnOutput(this, "MeDistributionId", {
+      value: distribution.distributionId,
     });
   }
 }
