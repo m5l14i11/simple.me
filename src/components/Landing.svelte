@@ -7,22 +7,6 @@
   $: context = $state.context;
 </script>
 
-<div>
-  <h1>{context.greetings}</h1>
-  <h2>{context.intro}</h2>
-  <ul>
-    {#each context.socials as item}
-      <li>
-        <a href={item.link} target="_blank" rel="noopener">
-          {item.name}
-        </a>
-      </li>
-    {/each}
-  </ul>
-  <p>{context.outro}</p>
-  <p />
-</div>
-
 <style type="text/scss">
   $color1: #de3600;
   $color2: #ee0000;
@@ -91,3 +75,17 @@
     }
   }
 </style>
+
+<div>
+  <h1>{context.greetings}</h1>
+  <h2>{context.intro}</h2>
+  <ul>
+    {#each context.socials as item}
+      <li>
+        <a href={item.link} target="_blank" rel="noopener"> {item.name} </a>
+      </li>
+    {/each}
+  </ul>
+  <p>{context.outro}</p>
+  <p />
+</div>

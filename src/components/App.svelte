@@ -3,28 +3,27 @@
   import { useMachine } from "@xstate/svelte/lib/fsm";
 
   import Landing from "./Landing.svelte";
-  import Portfolio from "./Portfolio.svelte";
+  import Me from "./Me.svelte";
+  import Build from "./Build.svelte";
   import WriteUp from "./WriteUp.svelte";
 </script>
 
-<main>
-  <nav>
-    <a href="/" target="_blank" rel="noopener">Me</a>
-    <a href="/portfolio" target="_blank" rel="noopener">Portfolio</a>
-    <a href="/writeup" target="_blank" rel="noopener">WriteUp</a>
-  </nav>
-  <Router>
-    <Route path="/" component={Landing} />
-    <Route path="/portfolio" component={Portfolio} />
-    <Route path="/writeup" component={WriteUp} />
-  </Router>
-</main>
-
 <style type="text/scss">
-  nav {
-  }
-
   nav a {
     padding-right: 1rem;
   }
 </style>
+
+<main>
+  <nav>
+    <a href="/me" target="_blank" rel="noopener">Me</a>
+    <a href="/build" target="_blank" rel="noopener">Build</a>
+    <a href="/writeup" target="_blank" rel="noopener">WriteUp</a>
+  </nav>
+  <Router>
+    <Route path="/" component={Landing} />
+    <Route path="/me" component={Me} />
+    <Route path="/build" component={Build} />
+    <Route path="/writeup" component={WriteUp} />
+  </Router>
+</main>
