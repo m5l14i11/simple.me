@@ -1,18 +1,26 @@
 <script context="module">
   import { writable } from "svelte/store";
+  import page from "page";
 
   export const activeRoute = writable({});
 
   const routes = {};
 
-  export function register(route) {
+  function register(route) {
     routes[route.path] = route;
   }
+
+  function navigate(e) {
+    e.preventDefault();
+    const path = e.target.pathname;
+    page.show(path);
+  }
+
+  export { navigate, register };
 </script>
 
 <script>
   import { onMount, onDestroy } from "svelte";
-  import page from "page";
 
   const setupPage = () => {
     for (let [path, route] of Object.entries(routes)) {

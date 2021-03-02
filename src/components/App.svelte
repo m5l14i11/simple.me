@@ -1,6 +1,7 @@
 <script lang="typescript">
   import Router from "./router/Router.svelte";
   import Route from "./router/Route.svelte";
+  import Link from "./router/Link.svelte";
 
   import Landing from "./Landing.svelte";
   import Me from "./Me.svelte";
@@ -10,9 +11,9 @@
 
 <main>
   <nav>
-    <a href="/me" target="_blank" rel="noopener">Me</a>
-    <a href="/build" target="_blank" rel="noopener">Build</a>
-    <a href="/writeup" target="_blank" rel="noopener">WriteUp</a>
+    <Link to="/me">Me</Link>
+    <Link to="/build">Build</Link>
+    <Link to="/writeup">WriteUp</Link>
   </nav>
   <Router>
     <Route path="/" component={Landing} />
@@ -23,7 +24,7 @@
 </main>
 
 <style type="text/scss">
-  nav a {
+  nav {
     padding-right: 1rem;
   }
 </style>
