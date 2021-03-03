@@ -33,6 +33,7 @@ class MeSite extends cdk.Construct {
       bucketName: siteDomain,
       websiteIndexDocument: "index.html",
       publicReadAccess: false,
+
       removalPolicy: RemovalPolicy.RETAIN,
     });
 

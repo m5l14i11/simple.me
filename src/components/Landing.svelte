@@ -1,4 +1,4 @@
-<script lang="typescript">
+<script lang="ts">
   import { useMachine } from "@xstate/svelte/lib/fsm";
   import { machine } from "../machines/Me.machine";
 
@@ -7,7 +7,7 @@
   $: context = $state.context;
 </script>
 
-<div>
+<section>
   <h1>{context.greetings}</h1>
   <h2>{context.intro}</h2>
   <ul>
@@ -18,19 +18,17 @@
     {/each}
   </ul>
   <p>{context.outro}</p>
-  <p />
-</div>
+</section>
 
 <style type="text/scss">
   $color1: #de3600;
   $color2: #ee0000;
   $color3: #fff;
 
-  div {
+  section {
     text-align: center;
     width: 100%;
     margin: 0 auto;
-    padding: 2em;
   }
 
   h1 {
@@ -65,7 +63,7 @@
   }
 
   @media only screen and (max-device-width: 812px) {
-    div {
+    section {
       text-align: left;
       padding: 1em;
     }

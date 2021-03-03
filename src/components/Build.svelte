@@ -1,5 +1,13 @@
-<script lang="typescript">
-  let title = "Build";
+<script lang="ts">
+  let title = "Coming soon";
 </script>
 
-<div>{title}</div>
+<section>{title} &#127871;</section>
+
+<style type="text/scss">
+  section {
+    text-align: center;
+    width: 100%;
+    margin: 0 auto;
+  }
+</style>

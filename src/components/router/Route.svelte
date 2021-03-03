@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { register, activeRoute } from "./Router.svelte";
 
   export let path = "*";

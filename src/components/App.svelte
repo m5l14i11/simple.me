@@ -1,4 +1,4 @@
-<script lang="typescript">
+<script lang="ts">
   import Router from "./router/Router.svelte";
   import Route from "./router/Route.svelte";
   import Link from "./router/Link.svelte";
@@ -7,15 +7,22 @@
   import Me from "./Me.svelte";
   import Build from "./Build.svelte";
   import WriteUp from "./WriteUp.svelte";
+
+  export let url = null;
 </script>
 
 <main>
-  <nav>
-    <Link to="/me">Me</Link>
-    <Link to="/build">Build</Link>
-    <Link to="/writeup">WriteUp</Link>
-  </nav>
-  <Router>
+  <div class="sticky">
+    <nav>
+      <ul>
+        <li><Link to="/me">Me</Link></li>
+        <li><Link to="/build">Build</Link></li>
+        <li><Link to="/writeup">Write Up</Link></li>
+      </ul>
+    </nav>
+  </div>
+  <div />
+  <Router {url}>
     <Route path="/" component={Landing} />
     <Route path="/me" component={Me} />
     <Route path="/build" component={Build} />
@@ -24,7 +31,20 @@
 </main>
 
 <style type="text/scss">
+  .sticky {
+    position: fixed;
+    top: 0;
+    margin: 0;
+  }
+
   nav {
-    padding-right: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  ul {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
 </style>
