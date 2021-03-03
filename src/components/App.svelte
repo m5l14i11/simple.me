@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Router from "./router/Router.svelte";
+  import Router, { activeRoute } from "./router/Router.svelte";
   import Route from "./router/Route.svelte";
   import Link from "./router/Link.svelte";
 
@@ -18,6 +18,9 @@
         <li><Link to="/me">Me</Link></li>
         <li><Link to="/build">Build</Link></li>
         <li><Link to="/writeup">Write Up</Link></li>
+        {#if $activeRoute.path !== "/"}
+          <li><Link to="/">Back</Link></li>
+        {/if}
       </ul>
     </nav>
   </div>
