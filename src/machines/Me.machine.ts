@@ -14,7 +14,7 @@ export interface Context {
 
 const buildContext = (): Context => ({
   greetings: "Hello EveryOne !",
-  intro: "I am Siarhei Melnik, Software Engineer",
+  intro: "I'm Siarhei Melnik, Software Engineer",
   socials: [
     {
       name: "email",

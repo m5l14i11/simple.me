@@ -53,7 +53,10 @@ export default {
       fileName: "index.html",
     }),
     copy({
-      targets: [{ src: "src/global.css", dest: "static" }],
+      targets: [
+        { src: "src/global.css", dest: "static" },
+        { src: "src/favicon.png", dest: "static" },
+      ],
     }),
     ...(DEV
       ? [
