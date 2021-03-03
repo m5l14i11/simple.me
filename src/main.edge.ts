@@ -6,12 +6,15 @@ const handler = async function (event) {
   try {
     const request = event.Records[0].cf.request;
 
-    if (request.uri !== "/index.html") {
-      return request;
-    }
+    const { uri } = request;
+    const match = uri.match(/\.([0-9a-z]+)(?:[\?#]|$)/i);
+
+    if (match && match[1] !== "html") return request;
 
     //@ts-ignore
-    const app = App.render();
+    const app = App.render({
+      url: uri.replace("index.html", "") || "/",
+    });
 
     return {
       status: "200",

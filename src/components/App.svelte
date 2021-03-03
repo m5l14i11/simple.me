@@ -1,90 +1,50 @@
-<script lang="typescript">
-	import { machine } from "../machines/MeMachine";
-	import { useMachine } from "@xstate/svelte/lib/fsm";
+<script lang="ts">
+  import Router from "./router/Router.svelte";
+  import Route from "./router/Route.svelte";
+  import Link from "./router/Link.svelte";
 
-	const { state } = useMachine(machine);
+  import Landing from "./Landing.svelte";
+  import Me from "./Me.svelte";
+  import Build from "./Build.svelte";
+  import WriteUp from "./WriteUp.svelte";
+
+  export let url = null;
 </script>
 
-<style type="text/scss">
-	$color1: #de3600;
-	$color2: #ee0000;
-	$color3: #fff;
-
-	main {
-		text-align: center;
-		width: 100%;
-		margin: 0 auto;
-		padding: 2em;
-	}
-
-	h1 {
-		color: $color1;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
-
-	h2 {
-		color: $color1;
-		text-transform: capitalize;
-		font-size: 3em;
-		font-weight: 100;
-	}
-
-	ul {
-		list-style-type: none;
-		margin: 0;
-		padding: 0;
-	}
-
-	a {
-		color: $color2;
-		text-transform: capitalize;
-		font-size: 1.5em;
-		font-weight: 100;
-	}
-
-	div {
-		color: #fff;
-	}
-
-	@media only screen and (max-device-width: 812px) {
-		main {
-			text-align: left;
-			padding: 1em;
-		}
-
-		h1 {
-			font-size: 3em;
-		}
-
-		h2 {
-			font-size: 2em;
-		}
-
-		ul {
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-		}
-
-		li {
-			margin-right: 0.4em;
-		}
-	}
-</style>
-
 <main>
-	<h1>{$state.context.greetings}</h1>
-	<h2>{$state.context.intro}</h2>
-	<ul>
-		{#each $state.context.socials as item}
-			<li>
-				<a target="_blank" rel="noopener" href={item.link}>
-					{item.name}
-				</a>
-			</li>
-		{/each}
-	</ul>
-	<div>{$state.context.outro}</div>
+  <div class="sticky">
+    <nav>
+      <ul>
+        <li><Link to="/me">Me</Link></li>
+        <li><Link to="/build">Build</Link></li>
+        <li><Link to="/writeup">Write Up</Link></li>
+      </ul>
+    </nav>
+  </div>
+  <div />
+  <Router {url}>
+    <Route path="/" component={Landing} />
+    <Route path="/me" component={Me} />
+    <Route path="/build" component={Build} />
+    <Route path="/writeup" component={WriteUp} />
+  </Router>
 </main>
+
+<style type="text/scss">
+  .sticky {
+    position: fixed;
+    top: 0;
+    margin: 0;
+  }
+
+  nav {
+    margin-bottom: 2rem;
+  }
+
+  ul {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+</style>

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import * as cdk from "@aws-cdk/core";
-import { MeSite } from "../lib/me-site";
+import { MeSite } from "../infra/me-site";
 
 class MeStack extends cdk.Stack {
   constructor(parent: cdk.Construct, name: string, props: cdk.StackProps) {
