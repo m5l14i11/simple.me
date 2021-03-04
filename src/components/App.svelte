@@ -43,7 +43,6 @@
       </ul>
     </nav>
   </div>
-  <div></div>
   <Router url="{url}">
     <Route path="/" component="{Landing}" />
     <Route path="/me" component="{Me}" />

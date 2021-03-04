@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 //@ts-ignore
 import Html from "./index.html";
 import App from "./components/App.svelte";
@@ -7,10 +8,10 @@ const handler = async function (event) {
     const request = event.Records[0].cf.request;
 
     const { uri } = request;
-    const match = uri.match(/\.([0-9a-z]+)(?:[\?#]|$)/i);
+    const match = uri.match(/\.([0-9a-z]+)(?:[?#]|$)/i);
 
     if (match && match[1] !== "html") return request;
-
+    
     //@ts-ignore
     const app = App.render({
       url: uri.replace("index.html", "") || "/",

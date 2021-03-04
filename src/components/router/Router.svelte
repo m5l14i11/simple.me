@@ -20,6 +20,7 @@
   }
 
   function navigate(e: MouseEvent) {
+    /* eslint-disable @typescript-eslint/ban-ts-comment */
     //@ts-ignore
     const path = e.target.pathname;
 
@@ -32,7 +33,7 @@
 
 <script lang="ts">
   import { onMount, onDestroy } from "svelte";
-  export let url: string = "";
+  export let url = "";
 
   const setupPage = () => {
     for (let [path, route] of Object.entries(routes)) {
