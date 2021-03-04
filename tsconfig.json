@@ -1,5 +1,12 @@
 {
   "extends": "@tsconfig/svelte/tsconfig.json",
+  "compilerOptions": {
+    "lib": ["DOM", "ES2017", "WebWorker"],
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "importsNotUsedAsValues": "remove",
+    "strict": false
+  },
   "include": ["src/**/*"],
   "exclude": ["node_modules/*", "dist/*", "lib/*", "bin/*", "cdk.out"]
 }

@@ -1,25 +1,3 @@
-<script lang="ts">
-  import { useMachine } from "@xstate/svelte/lib/fsm";
-  import { machine } from "../machines/Me.machine";
-
-  const { state } = useMachine(machine);
-
-  $: context = $state.context;
-</script>
-
-<section>
-  <h1>{context.greetings}</h1>
-  <h2>{context.intro}</h2>
-  <ul>
-    {#each context.socials as item}
-      <li>
-        <a href={item.link} target="_blank" rel="noopener"> {item.name} </a>
-      </li>
-    {/each}
-  </ul>
-  <p>{context.outro}</p>
-</section>
-
 <style type="text/scss">
   $color1: #de3600;
   $color2: #ee0000;
@@ -87,3 +65,25 @@
     }
   }
 </style>
+
+<script lang="ts">
+  import { useMachine } from "@xstate/svelte/lib/fsm";
+  import { machine } from "../machines/Me.machine";
+
+  const { state } = useMachine(machine);
+
+  $: context = $state.context;
+</script>
+
+<section>
+  <h1>{context.greetings}</h1>
+  <h2>{context.intro}</h2>
+  <ul>
+    {#each context.socials as item}
+      <li>
+        <a href="{item.link}" target="_blank" rel="noopener"> {item.name} </a>
+      </li>
+    {/each}
+  </ul>
+  <p>{context.outro}</p>
+</section>

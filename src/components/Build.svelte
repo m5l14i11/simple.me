@@ -1,9 +1,3 @@
-<script lang="ts">
-  let title = "Coming soon";
-</script>
-
-<section>{title} &#127871;</section>
-
 <style type="text/scss">
   section {
     text-align: center;
@@ -11,3 +5,9 @@
     margin: 0 auto;
   }
 </style>
+
+<script lang="ts">
+  let title = "Coming soon";
+</script>
+
+<section>{title} &#127871;</section>

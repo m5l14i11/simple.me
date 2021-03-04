@@ -32,7 +32,7 @@
 
 <script lang="ts">
   import { onMount, onDestroy } from "svelte";
-  export let url = null;
+  export let url: string = "";
 
   const setupPage = () => {
     for (let [path, route] of Object.entries(routes)) {

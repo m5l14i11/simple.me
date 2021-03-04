@@ -8,7 +8,8 @@
     "watch:build": "rollup --config rollup.config.dom.js --watch",
     "clean": "rimraf static edge",
     "verify": "svelte-check && tsc --noEmit",
-    "build": "run-s clean verify compile edge",
+    "format": "prettier --write ./src/**/*.{svelte,html,ts}",
+    "build": "run-s clean verify format compile edge",
     "compile": "rollup --config rollup.config.dom.js",
     "edge": "rollup --config rollup.config.edge.js",
     "deploy": "cdk deploy -c domain=siarheimelnik.dev -c subdomain=www"
