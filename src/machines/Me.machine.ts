@@ -41,7 +41,7 @@ const buildContext = (): IContext => ({
 });
 
 export const machine = createMachine<IContext>({
-  initial: "idle",
+  initial: "fetch",
   context: buildContext(),
-  states: { idle: {} }
+  states: { fetch: {} }
 });
