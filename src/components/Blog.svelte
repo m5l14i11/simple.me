@@ -1,9 +1,5 @@
 <style type="text/scss">
-  section {
-    text-align: center;
-    width: 100%;
-    margin: 0 auto;
-  }
+  @import "../styles/layout";
 </style>
 
 <script lang="ts">

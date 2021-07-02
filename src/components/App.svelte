@@ -1,52 +1,29 @@
 <style type="text/scss">
-  .sticky {
-    position: fixed;
-    top: 0;
-    margin: 0;
-  }
-
-  nav {
-    margin-bottom: 2rem;
-  }
-
-  ul {
-    display: flex;
-    margin: 0;
-    padding: 0;
-    list-style: none;
+  main {
+    width: 100%;
+    height: 100%;
   }
 </style>
 
 <script lang="ts">
-  import Router, { activeRoute } from "./router/Router.svelte";
+  import Router from "./router/Router.svelte";
   import Route from "./router/Route.svelte";
-  import Link from "./router/Link.svelte";
 
-  import Landing from "./Landing.svelte";
-  import Me from "./Me.svelte";
+  import Nav from "./Nav.svelte";
+  import Home from "./Home.svelte";
+  import Edu from "./Edu.svelte";
   import Build from "./Build.svelte";
-  import WriteUp from "./WriteUp.svelte";
+  import Blog from "./Blog.svelte";
 
   export let url = "";
 </script>
 
 <main>
-  <div class="sticky">
-    <nav>
-      <ul>
-        <li><Link to="/me">Me</Link></li>
-        <li><Link to="/build">Build</Link></li>
-        <li><Link to="/writeup">Write Up</Link></li>
-        {#if $activeRoute.path !== "/"}
-          <li><Link to="/">Back</Link></li>
-        {/if}
-      </ul>
-    </nav>
-  </div>
+  <Nav />
   <Router url="{url}">
-    <Route path="/" component="{Landing}" />
-    <Route path="/me" component="{Me}" />
+    <Route path="/" component="{Home}" />
+    <Route path="/edu" component="{Edu}" />
     <Route path="/build" component="{Build}" />
-    <Route path="/writeup" component="{WriteUp}" />
+    <Route path="/blog" component="{Blog}" />
   </Router>
 </main>
