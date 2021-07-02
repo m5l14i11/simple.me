@@ -12,6 +12,13 @@
       background-color: $color2;
     }
   }
+
+  @media only screen and (max-device-width: 812px) {
+    a {
+      font-size: 1.2em;
+      padding: 20px;
+    }
+  }
 </style>
 
 <script lang="ts">

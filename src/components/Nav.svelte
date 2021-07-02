@@ -5,7 +5,7 @@
     align-items: center;
     justify-content: flex-end;
     margin: 0 auto;
-    padding: 20px 40px;
+    padding: 20px 20px;
   }
 
   ul {
@@ -14,6 +14,14 @@
     padding: 0;
     list-style: none;
     overflow: hidden;
+  }
+
+  @media only screen and (max-device-width: 812px) {
+    .header {
+      padding: 0px;
+      justify-content: flex-start;
+      flex: 0;
+    }
   }
 </style>
 

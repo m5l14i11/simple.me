@@ -29,6 +29,7 @@
     list-style: none;
     margin: 0;
     padding: 0;
+    overflow: hidden;
   }
 
   a {
@@ -48,24 +49,22 @@
     }
   }
 
-  // @media only screen and (max-device-width: 812px) {
-  //   section {
-  //     padding: 1em;
-  //   }
+  @media only screen and (max-device-width: 812px) {
+    h1 {
+      font-size: 3.4em;
+    }
 
-  //   h1 {
-  //     font-size: 3em;
-  //   }
+    h2 {
+      font-size: 2.3em;
+    }
 
-  //   h2 {
-  //     font-size: 2em;
-  //   }
-
-  //   ul {
-  //     display: flex;
-  //     list-style: none;
-  //   }
-  // }
+    a {
+      display: block;
+      font-size: 1em;
+      padding: 10px 5px;
+      margin-right: 5px;
+    }
+  }
 </style>
 
 <script lang="ts">
