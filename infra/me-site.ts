@@ -34,7 +34,7 @@ class MeSite extends cdk.Construct {
       websiteIndexDocument: "index.html",
       publicReadAccess: false,
 
-      removalPolicy: RemovalPolicy.RETAIN,
+      removalPolicy: RemovalPolicy.DESTROY,
     });
 
     const originAccessIdentity = new cloudfront.OriginAccessIdentity(
@@ -54,7 +54,7 @@ class MeSite extends cdk.Construct {
     );
 
     const edgeSSRFunction = new lambda.Function(this, "MeEdgeSSRHandler", {
-      runtime: lambda.Runtime.NODEJS_12_X,
+      runtime: lambda.Runtime.NODEJS_14_X,
       code: lambda.Code.fromAsset("./edge"),
       memorySize: 128,
       timeout: Duration.seconds(3),

@@ -76,13 +76,12 @@
   const { state } = useMachine(machine);
 
   $: context = $state.context;
-  $: title = $state.context.title;
 </script>
 
 <section>
   <h1>{context.greetings}</h1>
   <h2>{context.intro}</h2>
-  <h2 class="title anim-typewriter">{title}</h2>
+  <h2 class="title">{context.title}</h2>
   <ul>
     {#each context.socials as item}
       <li>

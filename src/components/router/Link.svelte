@@ -4,7 +4,7 @@
   a {
     display: block;
     padding: 20px;
-    font-size: 1.2rem;
+    font-size: 1.2em;
     text-decoration: none;
     color: $color4;
 
@@ -15,7 +15,7 @@
 
   @media only screen and (max-device-width: 812px) {
     a {
-      font-size: 1.2em;
+      font-size: 1em;
       padding: 20px;
     }
   }
