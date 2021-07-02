@@ -18,14 +18,14 @@
 </style>
 
 <script lang="ts">
-  import Router, { activeRoute } from "./router/Router.svelte";
+  import Router from "./router/Router.svelte";
   import Route from "./router/Route.svelte";
   import Link from "./router/Link.svelte";
 
   import Landing from "./Landing.svelte";
   import Me from "./Me.svelte";
   import Build from "./Build.svelte";
-  import WriteUp from "./WriteUp.svelte";
+  import Blog from "./Blog.svelte";
 
   export let url = "";
 </script>
@@ -36,10 +36,7 @@
       <ul>
         <li><Link to="/me">Me</Link></li>
         <li><Link to="/build">Build</Link></li>
-        <li><Link to="/writeup">Write Up</Link></li>
-        {#if $activeRoute.path !== "/"}
-          <li><Link to="/">Back</Link></li>
-        {/if}
+        <li><Link to="/blog">Blog</Link></li>
       </ul>
     </nav>
   </div>
@@ -47,6 +44,6 @@
     <Route path="/" component="{Landing}" />
     <Route path="/me" component="{Me}" />
     <Route path="/build" component="{Build}" />
-    <Route path="/writeup" component="{WriteUp}" />
+    <Route path="/blog" component="{Blog}" />
   </Router>
 </main>

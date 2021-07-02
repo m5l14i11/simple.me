@@ -1,16 +1,23 @@
-import * as cdk from "@aws-cdk/core";
-import * as s3 from "@aws-cdk/aws-s3";
-import * as s3deploy from "@aws-cdk/aws-s3-deployment";
-import * as cloudfront from "@aws-cdk/aws-cloudfront";
-import * as route53 from "@aws-cdk/aws-route53";
-import * as acm from "@aws-cdk/aws-certificatemanager";
-import * as targets from "@aws-cdk/aws-route53-targets/lib";
-import * as lambda from "@aws-cdk/aws-lambda";
+import { Construct, CfnOutput } from "@aws-cdk/core";
+import { Function, Runtime, Code, Version } from "@aws-cdk/aws-lambda";
 import { Duration, RemovalPolicy } from "@aws-cdk/core";
+import { Bucket } from "@aws-cdk/aws-s3";
+import { 
+  OriginAccessIdentity, CloudFrontWebDistribution,
+  HttpVersion, SSLMethod, SecurityPolicyProtocol,
+  LambdaEdgeEventType
+} from "@aws-cdk/aws-cloudfront";
+import {
+  BucketDeployment,
+  Source
+} from "@aws-cdk/aws-s3-deployment";
+import { ARecord, RecordTarget, HostedZone } from "@aws-cdk/aws-route53";
+import { DnsValidatedCertificate } from "@aws-cdk/aws-certificatemanager";
+import * as targets from "@aws-cdk/aws-route53-targets/lib";
 
-class MeSite extends cdk.Construct {
+class MeSite extends Construct {
   constructor(
-    parent: cdk.Construct,
+    parent: Construct,
     name: string,
     props: { siteSubDomain: string; domainName: string }
   ) {
@@ -18,7 +25,7 @@ class MeSite extends cdk.Construct {
 
     const { siteSubDomain, domainName } = props;
 
-    const hostedZone = route53.HostedZone.fromHostedZoneAttributes(
+    const hostedZone = HostedZone.fromHostedZoneAttributes(
       this,
       "MeZone",
       {
@@ -29,22 +36,21 @@ class MeSite extends cdk.Construct {
 
     const siteDomain = `${siteSubDomain}.${domainName}`;
 
-    const siteBucket = new s3.Bucket(this, "MeSiteBucket", {
+    const siteBucket = new Bucket(this, "MeSiteBucket", {
       bucketName: siteDomain,
       websiteIndexDocument: "index.html",
       publicReadAccess: false,
-
       removalPolicy: RemovalPolicy.RETAIN,
     });
 
-    const originAccessIdentity = new cloudfront.OriginAccessIdentity(
+    const originAccessIdentity = new OriginAccessIdentity(
       this,
       "MeOAI"
     );
 
     siteBucket.grantRead(originAccessIdentity);
 
-    const certificate = new acm.DnsValidatedCertificate(
+    const certificate = new DnsValidatedCertificate(
       this,
       "MeSiteCertificate",
       {
@@ -53,15 +59,15 @@ class MeSite extends cdk.Construct {
       }
     );
 
-    const edgeSSRFunction = new lambda.Function(this, "MeEdgeSSRHandler", {
-      runtime: lambda.Runtime.NODEJS_12_X,
-      code: lambda.Code.fromAsset("./edge"),
+    const edgeSSRFunction = new Function(this, "MeEdgeSSRHandler", {
+      runtime: Runtime.NODEJS_14_X,
+      code: Code.fromAsset("./edge"),
       memorySize: 128,
       timeout: Duration.seconds(3),
       handler: "index.handler",
     });
 
-    const edgeSSRFunctionVersion = new lambda.Version(
+    const edgeSSRFunctionVersion = new Version(
       this,
       "MeEdgeSSRHandlerVersion",
       {
@@ -70,18 +76,18 @@ class MeSite extends cdk.Construct {
       }
     );
 
-    const distribution = new cloudfront.CloudFrontWebDistribution(
+    const distribution = new CloudFrontWebDistribution(
       this,
       "MeSiteDistribution",
       {
         enableIpV6: true,
-        httpVersion: cloudfront.HttpVersion.HTTP2,
+        httpVersion: HttpVersion.HTTP2,
 
         aliasConfiguration: {
           acmCertRef: certificate.certificateArn,
           names: [siteDomain],
-          sslMethod: cloudfront.SSLMethod.SNI,
-          securityPolicy: cloudfront.SecurityPolicyProtocol.TLS_V1_1_2016,
+          sslMethod: SSLMethod.SNI,
+          securityPolicy: SecurityPolicyProtocol.TLS_V1_1_2016,
         },
 
         originConfigs: [
@@ -96,7 +102,7 @@ class MeSite extends cdk.Construct {
                 pathPattern: "/",
                 lambdaFunctionAssociations: [
                   {
-                    eventType: cloudfront.LambdaEdgeEventType.ORIGIN_REQUEST,
+                    eventType: LambdaEdgeEventType.ORIGIN_REQUEST,
                     lambdaFunction: edgeSSRFunctionVersion,
                   },
                 ],
@@ -107,34 +113,41 @@ class MeSite extends cdk.Construct {
       }
     );
 
-    new route53.ARecord(this, "MeSiteAliasRecord", {
+    new ARecord(this, "MeSiteAliasRecord", {
       recordName: siteDomain,
       zone: hostedZone,
-      target: route53.RecordTarget.fromAlias(
+      target: RecordTarget.fromAlias(
         new targets.CloudFrontTarget(distribution)
       ),
     });
 
-    new s3deploy.BucketDeployment(this, "MeSiteDeployWithInvalidation", {
-      sources: [s3deploy.Source.asset("./static")],
+    new BucketDeployment(this, "MeSiteDeployWithInvalidation", {
+      sources: [Source.asset("./static")],
       destinationBucket: siteBucket,
       distribution,
       distributionPaths: ["/*"],
     });
 
-    new cdk.CfnOutput(this, "MeSite", {
+    new BucketDeployment(this, "MeDataDeployWithInvalidation", {
+      sources: [Source.asset("./data")],
+      destinationBucket: siteBucket,
+      distribution,
+      distributionPaths: ["/*"],
+    });
+
+    new CfnOutput(this, "MeSite", {
       value: `https://${siteDomain}`,
     });
 
-    new cdk.CfnOutput(this, "MeBucket", {
+    new CfnOutput(this, "MeBucket", {
       value: siteBucket.bucketName,
     });
 
-    new cdk.CfnOutput(this, "MeCertificate", {
+    new CfnOutput(this, "MeCertificate", {
       value: certificate.certificateArn,
     });
 
-    new cdk.CfnOutput(this, "MeDistributionId", {
+    new CfnOutput(this, "MeDistributionId", {
       value: distribution.distributionId,
     });
   }

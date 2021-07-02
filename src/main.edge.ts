@@ -14,7 +14,7 @@ const handler = async function (event) {
     
     //@ts-ignore
     const app = App.render({
-      url: uri.replace("index.html", "") || "/",
+      url: uri.replace("index.html", "") ?? "/",
     });
 
     return {

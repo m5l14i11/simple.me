@@ -5,39 +5,28 @@ export interface ISocial {
   link: string;
 }
 
+export interface ICert {
+  school: string;
+  platform: string;
+  link: string;
+}
+
 export interface IContext {
   intro: string;
+  titles: string[];
   greetings: string;
   socials: ISocial[];
+  certs: ICert[];
   outro: string;
 }
 
 const buildContext = (): IContext => ({
-  greetings: "Hello EveryOne !",
-  intro: "I'm Siarhei Melnik, Software Engineer",
-  socials: [
-    {
-      name: "email",
-      link: "mailto:siarhei.m.a@gmail.com"
-    },
-    {
-      name: "twitter",
-      link: "https://twitter.com/m_siarhei"
-    },
-    {
-      name: "github",
-      link: "https://github.com/m5l14i11"
-    },
-    {
-      name: "telegram",
-      link: "https://t.me/msiarhei"
-    },
-    {
-      name: "linkedin",
-      link: "https://www.linkedin.com/in/siarheim"
-    }
-  ].sort((a, b) => b.name.length - a.name.length),
-  outro: "Wm05c2JHOTNJSFJvWlNCM2FHbDBaU0J5WVdKaWFYUWc4SitRaHc9PQ=="
+  intro: '',
+  titles: [],
+  greetings: '',
+  socials: [],
+  certs: [],
+  outro: ''
 });
 
 export const machine = createMachine<IContext>({
