@@ -5,14 +5,14 @@
   h1 {
     color: $color3;
     text-transform: uppercase;
-    font-size: 4em;
+    font-size: 5em;
     font-weight: 400;
   }
 
   h2 {
     color: $color4;
     text-transform: capitalize;
-    font-size: 3em;
+    font-size: 4em;
     font-weight: 400;
   }
 
@@ -76,12 +76,13 @@
   const { state } = useMachine(machine);
 
   $: context = $state.context;
+  $: title = $state.context.title;
 </script>
 
 <section>
   <h1>{context.greetings}</h1>
   <h2>{context.intro}</h2>
-  <h2 class="title anim-typewriter">{context.title}</h2>
+  <h2 class="title anim-typewriter">{title}</h2>
   <ul>
     {#each context.socials as item}
       <li>
