@@ -7,14 +7,16 @@ export interface ISocial {
 
 export interface IContext {
   intro: string;
+  title: string;
   greetings: string;
   socials: ISocial[];
   outro: string;
 }
 
 const buildContext = (): IContext => ({
+  intro: "I'm Siarhei Melnik",
+  title: "Software Engineer",
   greetings: "Hello EveryOne !",
-  intro: "I'm Siarhei Melnik, Software Engineer",
   socials: [
     {
       name: "email",

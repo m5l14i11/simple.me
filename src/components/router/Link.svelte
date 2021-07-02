@@ -1,14 +1,15 @@
 <style type="text/scss">
+  @import "../../styles/vars";
+
   a {
-    display: flex;
-    padding: 1rem;
-    justify-content: center;
-    align-items: center;
+    display: block;
+    padding: 20px;
+    font-size: 1.2rem;
     text-decoration: none;
-    color: #ee0000;
+    color: $color4;
 
     &:hover {
-      opacity: 0.8;
+      background-color: $color2;
     }
   }
 </style>
@@ -18,6 +19,6 @@
   export let to = "";
 </script>
 
-<a href="{to}" on:click="{navigate}" target="_blank" rel="noopener">
+<a href="{to}" on:click="{navigate}" target="_blank" rel="noopener noreferrer">
   <slot />
 </a>
