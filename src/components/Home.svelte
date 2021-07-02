@@ -52,10 +52,12 @@
   @media only screen and (max-device-width: 812px) {
     h1 {
       font-size: 3.4em;
+      margin: 0.8em 0;
     }
 
     h2 {
       font-size: 2.3em;
+      margin: 0.6em 0;
     }
 
     a {
