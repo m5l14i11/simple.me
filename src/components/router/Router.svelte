@@ -1,8 +1,9 @@
 <script lang="ts" context="module">
   import { writable } from "svelte/store";
-  import page from "page";
+  import { createBrowserHistory } from "history";
 
   export const activeRoute = writable({ path: "", component: null });
+  const history = createBrowserHistory();
 
   interface IRoute {
     path: string;
@@ -19,13 +20,13 @@
     routes[route.path] = route;
   }
 
-  function navigate(e: MouseEvent) {
-    /* eslint-disable @typescript-eslint/ban-ts-comment */
-    //@ts-ignore
+  function navigate(e: Event) {
+    // @ts-ignore
     const path = e.target.pathname;
 
     e.preventDefault();
-    page.show(path);
+
+    history.push(path);
   }
 
   export { navigate, register };
@@ -35,19 +36,23 @@
   import { onMount, onDestroy } from "svelte";
   export let url = "";
 
+  let unlisten = () => {};
+
   const setupPage = () => {
-    for (let [path, route] of Object.entries(routes)) {
-      page(path, () => ($activeRoute = route));
-    }
+    unlisten = history.listen(({ location }) => {
+      for (let [path, route] of Object.entries(routes)) {
+        if (location.pathname == path) {
+          $activeRoute = route;
+        }
+      }
+    });
 
-    page.start({ dispatch: process.browser });
-
-    if (url) page.show(url);
+    if (url) history.replace(url);
   };
 
   onMount(setupPage);
 
-  onDestroy(page.stop);
+  onDestroy(unlisten);
 </script>
 
 <slot />

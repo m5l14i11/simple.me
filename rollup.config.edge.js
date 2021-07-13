@@ -28,8 +28,8 @@ export default {
     typescript({ sourceMap: DEV }),
     commonjs({ sourceMap: DEV }),
     replace({
-      "process.env.NODE_ENV": DEV ? "development" : "production",
-      "process.browser": false,
+      "process.env.NODE_ENV": DEV ? JSON.stringify('development') : JSON.stringify('production'),
+      "process.browser": JSON.stringify(true),
       preventAssignment: true,
     }),
     svelte({
