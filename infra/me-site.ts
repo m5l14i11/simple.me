@@ -61,15 +61,6 @@ class MeSite extends cdk.Construct {
       handler: "index.handler",
     });
 
-    const edgeSSRFunctionVersion = new lambda.Version(
-      this,
-      "MeEdgeSSRHandlerVersion",
-      {
-        lambda: edgeSSRFunction,
-        removalPolicy: RemovalPolicy.DESTROY,
-      }
-    );
-
     const distribution = new cloudfront.CloudFrontWebDistribution(
       this,
       "MeSiteDistribution",
@@ -97,7 +88,7 @@ class MeSite extends cdk.Construct {
                 lambdaFunctionAssociations: [
                   {
                     eventType: cloudfront.LambdaEdgeEventType.ORIGIN_REQUEST,
-                    lambdaFunction: edgeSSRFunctionVersion,
+                    lambdaFunction: edgeSSRFunction.currentVersion,
                   },
                 ],
               },
