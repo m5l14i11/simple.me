@@ -1,1 +1,1 @@
-Personal site build with mix svelte and aws lambda
+Edge powered personal static site
