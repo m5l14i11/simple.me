@@ -32,7 +32,7 @@
     "prettier": "^2.3.2",
     "prettier-plugin-svelte": "^2.3.1",
     "rimraf": "^3.0.2",
-    "rollup": "^2.54.0",
+    "rollup": "^3.29.5",
     "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-html2": "^2.0.0",
     "rollup-plugin-import-css": "^2.0.0",
